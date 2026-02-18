@@ -1,0 +1,19 @@
+{
+  "name": "plotly-graph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "documentation": "https://docs.google.com/document/d/1l49kpMtPoEmDlRjCuYTcdI2m4LcccRsvFG3uuciv208/edit?usp=sharing",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.23.0",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.992.0",
+    "dotenv": "^17.3.1",
+    "mime-types": "^3.0.2"
+  }
+}
