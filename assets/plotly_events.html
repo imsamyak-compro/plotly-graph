@@ -1,0 +1,76 @@
+<!-- file: 8_plotly_events.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        #log { background: #f0f0f0; border: 1px solid #ccc; padding: 10px; height: 100px; overflow-y: scroll; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h3>Plotly Events Listener</h3>
+    <p>Interact with the graph (Click points, Zoom, or Box Select) to see events below.</p>
+    
+    <div id="graph"></div>
+    <div id="hover" class="hidden"> HOVER DIV</div>
+    <div id="log">Event Log...</div>
+
+    <script>
+        var trace = {
+            x: [1, 2, 3, 4, 5],
+            y: [2, 5, 3, 6, 1],
+            mode: 'markers+lines',
+            type: 'scatter',
+            marker: { size: 12 }
+        };
+
+        var layout = { 
+            title: 'Interactive Event Graph',
+            dragmode: 'zoom', // Allows zooming
+        };
+
+        Plotly.newPlot('graph', [trace], layout);
+
+        var graphDiv = document.getElementById('graph');
+        var logDiv = document.getElementById('log');
+        var hoverDiv = document.getElementById('hover')
+
+        // Helper to print to screen
+        function log(msg) {
+            logDiv.innerHTML = `> ${msg}<br>` + logDiv.innerHTML;
+        }
+
+        // --- 1. CLICK EVENT ---
+        graphDiv.on('plotly_click', function(data){
+            var pt = data.points[0];
+            log(`<b>CLICKED:</b> x=${pt.x}, y=${pt.y}`);
+        });
+
+        // --- 2. HOVER EVENT ---
+       graphDiv.on('plotly_hover', function(data){
+            var pt = data.points[0]; // Get the data of the hovered point
+            hoverDiv.innerHTML = `
+                X-Axis: <b>${pt.x}</b><br>
+                Y-Axis: <b>${pt.y}</b><br>
+                Index: [${pt.pointIndex}]
+            `;
+        });
+
+        // --- 2. UNHOVER LOGIC (Leave) ---
+        graphDiv.on('plotly_unhover', function(data){
+            hoverDiv.innerHTML = "Hover over a point...";
+            
+        });
+
+        // --- 3. RELAYOUT (ZOOM/PAN) EVENT ---
+        graphDiv.on('plotly_relayout', function(eventData){
+            // eventData contains the new axis ranges
+            if(eventData['xaxis.range[0]']) {
+                log(`<b>ZOOMED:</b> X-Range: [${eventData['xaxis.range[0]'].toFixed(1)}, ${eventData['xaxis.range[1]'].toFixed(1)}]`);
+            } else {
+                log(`<b>RELAYOUT:</b> (Autoscale or other config change)`);
+            }
+        });
+    </script>
+</body>
+</html>

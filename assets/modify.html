@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>button { margin: 5px; padding: 8px; cursor: pointer; }</style>
+</head>
+<body>
+    <h3>Graph Modification (Restyle, Relayout, Extend)</h3>
+    <div id="graph"></div>
+    
+    <!-- Controls -->
+    <button onclick="changeColor()">1. Restyle (Change Color)</button>
+    <button onclick="updateTitle()">2. Relayout (New Title)</button>
+    <button onclick="addNewLine()">3. Extend (Add New Line)</button>
+    <button onclick="removeLastLine()">4. Reduce (Delete Last)</button>
+
+    <script>
+        // Initial Graph: y = x
+        var trace1 = { x: [0, 10], y: [0, 10], mode: 'lines', name: 'Original' };
+        var layout = { title: 'Initial State' };
+        
+        Plotly.newPlot('graph', [trace1], layout);
+
+        // --- 1. RESTYLE (Modify Data/Trace) ---
+        function changeColor() {
+            // Arguments: (DOM element, Update Object, Trace Indices to apply to)
+            var update = { 'line.color': 'red', 'line.width': 5 };
+            Plotly.restyle('graph', update, [0]); // Apply to trace 0
+        }
+
+        // --- 2. RELAYOUT (Modify Layout) ---
+        function updateTitle() {
+            var update = { 
+                title: 'UPDATED TITLE',
+                'xaxis.title': 'New X Label' 
+            };
+            Plotly.relayout('graph', update);
+        }
+
+        // --- 3. EXTEND (Add New Trace) ---
+        function addNewLine() {
+            // New Line: y = -x + 10
+            var newTrace = {
+                x: [0, 10], y: [10, 0],
+                mode: 'lines', name: 'New Line',
+                line: { color: 'green', dash: 'dash' }
+            };
+            Plotly.addTraces('graph', newTrace);
+        }
+
+        // --- 4. REDUCE (Delete Trace) ---
+        function removeLastLine() {
+            // Logic to get total traces count could go here
+            // -1 removes the last trace in the array
+            Plotly.deleteTraces('graph', -1); 
+        }
+    </script>
+</body>
+</html>
