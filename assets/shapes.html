@@ -1,0 +1,50 @@
+<!-- file: 4_shapes_and_restrictions.html -->
+<!DOCTYPE html>
+<html>
+<head><script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script></head>
+<body>
+    <h3>Shapes</h3>
+    <p> Shapes: Line, Circle, Rectangle</p>
+    <p>Draw modes: Drawline, Drawrect, drawcircle</p>
+    <div id="graph"></div>
+    <script>
+        // Base Data: Simple Linear Graph
+        var trace = { x: [0, 10], y: [0, 10], mode: 'lines'};
+        var preLoadedShapes = [
+            {
+                type: 'line',
+                x0: 0, y0: 8, x1: 10, y1: 8,
+                line: { color: 'red', width: 3, dash: 'dot' }
+            },
+            {
+                type: 'rect',
+                x0: 2, y0: 0, x1: 4, y1: 5,
+                fillcolor: 'green', opacity: 0.2, line: { width: 0 },
+                layer: 'below', // Places shape behind the data line
+                editable: true
+            },
+            {
+                type: 'circle',
+                x0: 6, y0: 4, x1: 7, y1: 7, // Defined by bounding box
+                line: { color: 'blue' }
+            }
+        ];
+
+        var layout = {
+            title: 'Shapes',
+            shapes: preLoadedShapes,
+            dragmode: 'drawline', 
+            
+            xaxis: { range: [0, 10] },
+            yaxis: { range: [0, 10] }
+        };
+
+        var config = {
+            modeBarButtonsToAdd: ['drawline', 'eraseshape', 'drawrect', 'drawcircle',],
+            modeBarButtonsToRemove: [ 'zoom2d', 'pan2d'] 
+        };
+
+        Plotly.newPlot('graph', [trace], layout, config);
+    </script>
+</body>
+</html>

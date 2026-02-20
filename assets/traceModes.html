@@ -1,0 +1,48 @@
+<!-- file: 7_trace_modes.html -->
+<!DOCTYPE html>
+<html>
+<head><script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script></head>
+<body>
+    <h3>Trace Modes</h3>
+    <div id="graph"></div>
+    <script>
+        // 1. MARKERS ONLY
+        var trace1 = {
+            x: [1, 2, 3, 4], y: [10, 15, 13, 17],
+            mode: 'markers', // Capability: Dots only
+            name: 'Markers Only',
+            marker: { size: 12 }
+        };
+
+        // 2. LINES ONLY
+        var trace2 = {
+            x: [1, 2, 3, 4], y: [8, 13, 11, 15],
+            mode: 'lines', // Capability: Line only
+            name: 'Lines Only',
+        };
+
+        // 3. LINES + MARKERS
+        var trace3 = {
+            x: [1, 2, 3, 4], y: [6, 11, 9, 13],
+            mode: 'lines+markers', // Capability: Both
+            name: 'Lines + Markers',
+        };
+
+        // 4. TEXT ONLY
+        var trace4 = {
+            x: [1, 2, 3, 4], y: [4, 9, 7, 11],
+            mode: 'lines+text', // Capability: Text labels and Line Both
+            name: 'Lines + Text',
+            text: ['Pt 1', 'Pt 2', 'Pt 3', 'Pt 4'], // The text to display
+            // textposition: 'bottom center',
+        };
+
+        var layout = {
+            title: 'Trace Mode Comparison',
+            yaxis: { range: [0, 20] }
+        };
+
+        Plotly.newPlot('graph', [trace1, trace2, trace3, trace4], layout);
+    </script>
+</body>
+</html>

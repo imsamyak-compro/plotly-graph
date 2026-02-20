@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head><script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script></head>
+<body>
+    <h3>Axis Bounds, labels and zoom-pan functionality</h3>
+    <p>Graph represents a linear graph from <b>  (4,7) to (20,15) </b> </p>
+    <p> View is strictly bounded to x=[0, 25] and y=[-6, 20].</p>
+    <div id="graph"></div>
+    <script>
+        var trace = { 
+            x: [4, 20], 
+            y: [7, 15], 
+            mode: 'lines', 
+        };
+
+        var layout = {
+            title: 'Bounded Linear Graph',
+            xaxis: { 
+                // fixedrange: true, 
+                range: [0, 25], 
+                title: {
+                    text: 'custom label, font: size 16, color blue', //customlabel
+                    font: { size: 18, color: 'blue' }
+                }
+            },
+            yaxis: { 
+                fixedrange: true, // fixes axis bounds
+                range: [-6, 20],
+                title: 'y'
+            },
+            dragmode: false // disables default zoom ability
+        };
+        Plotly.newPlot('graph', [trace], layout);
+    </script>
+</body>
+</html>

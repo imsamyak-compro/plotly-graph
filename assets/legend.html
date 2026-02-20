@@ -1,0 +1,45 @@
+<!-- file: 3_graph_legends.html -->
+<!DOCTYPE html>
+<html>
+<head><script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script></head>
+<body>
+    <h3>Legends in a plotly graph</h3>
+    <p>Comparing two linear functions with custom legend positioning.</p>
+    <div id="graph"></div>
+    <script>
+        // Equation 1: y = x
+        var line1 = { 
+            x: [0, 10], y: [0, 10], 
+            mode: 'lines', 
+            name: 'LINE A'
+        };
+
+        // Equation 2: y = 2x + 5
+        var line2 = { 
+            x: [0, 10], y: [5, 25], 
+            mode: 'lines', 
+            name: 'LINE B',
+            line: { dash: 'dash' }
+        };
+        
+        var layout = {
+            showlegend: true,
+            legend : { 
+                // Horizontal Position (0=Left, 1=Right)
+                // 0.1 places it 10% inward from the left Y-axis
+                x: 0.1, 
+                
+                // Vertical Position (0=Bottom, 1=Top)
+                // 1.1 places it slightly above the graph area (to avoid covering data)
+                y: 1.1, 
+                
+                // Layout Flow ('v'=Vertical Stack, 'h'=Horizontal Row)
+                // Arranges legend items side-by-side
+                orientation: 'h' 
+            }
+        };
+
+        Plotly.newPlot('graph', [line1, line2], layout);
+    </script>
+</body>
+</html>
