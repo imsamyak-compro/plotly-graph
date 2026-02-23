@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotly Capabilities - Full Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --sidebar-bg: rgba(30, 41, 59, 0.7);
+            --primary: #38bdf8;
+            --accent: #818cf8;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --code-bg: #1e293b;
+            --border: rgba(255, 255, 255, 0.1);
+            --table-header: rgba(56, 189, 248, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 320px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border);
+            padding: 2.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin-bottom: 1rem; }
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: block;
+        }
+        .sidebar a:hover { color: var(--primary); transform: translateX(4px); }
+
+        /* Main Content */
+        .content {
+            flex: 1;
+            padding: 4rem 10%;
+            max-width: 1200px;
+        }
+
+        header { margin-bottom: 5rem; }
+        header .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            gap: 0.5rem;
+        }
+
+        h1 { font-size: 3.5rem; margin-bottom: 1rem; color: var(--primary); letter-spacing: -0.04em; }
+        h2 { font-size: 2.25rem; margin-top: 4rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; color: var(--text); }
+        h3 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1.25rem; color: var(--accent); }
+        h4 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; color: var(--primary); }
+
+        p { margin-bottom: 1.5rem; color: var(--text-muted); font-size: 1.1rem; }
+
+        ul, ol { margin-bottom: 1.5rem; margin-left: 1.5rem; color: var(--text-muted); font-size: 1.1rem; }
+        li { margin-bottom: 0.75rem; }
+        strong { color: var(--text); }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            padding: 1.75rem;
+            border-radius: 1.25rem;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            margin-bottom: 2.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        code { font-family: 'JetBrains Mono', monospace; color: var(--accent); background: rgba(129, 140, 248, 0.1); padding: 0.2rem 0.4rem; border-radius: 0.4rem; }
+        pre code { color: var(--text); background: none; padding: 0; }
+
+        /* Tables */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 3rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th { background: var(--table-header); color: var(--primary); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }
+        tr:last-child td { border-bottom: none; }
+
+        /* Alerts */
+        .alert {
+            padding: 1.5rem;
+            border-radius: 1.25rem;
+            margin-bottom: 2.5rem;
+            border-left: 6px solid;
+            background: rgba(15, 23, 42, 0.4);
+        }
+        .alert-important { border-color: var(--primary); background: rgba(56, 189, 248, 0.05); }
+        .alert-important strong { color: var(--primary); }
+
+        hr { border: none; border-top: 1px solid var(--border); margin: 4rem 0; }
+
+        @media (max-width: 1200px) {
+            .sidebar { width: 260px; padding: 1.5rem; }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { display: none; }
+            .content { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <h2>Full Docs</h2>
+        <ul>
+            <li><a href="#axis-bounds">Axis Bounds</a></li>
+            <li><a href="#axis-labels">Axis Labels</a></li>
+            <li><a href="#legends">Legends</a></li>
+            <li><a href="#trace-modes">Trace Modes</a></li>
+            <li><a href="#shapes">Shapes & Drawing</a></li>
+            <li><a href="#modification">Dynamic Modification</a></li>
+            <li><a href="#events">Event Listeners</a></li>
+            <li><a href="#modules">Modules Overview</a></li>
+            <li><a href="#integration">Vue/Nuxt Integration</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <header>
+            <a href="index.html" class="back-link"><span>←</span> Back to Explorer</a>
+            <h1>Technical Reference</h1>
+            <p>100% Comprehensive guide for Plotly.js implementation, configuration, and optimization.</p>
+        </header>
+
+        <!-- AXIS BOUNDS -->
+        <section id="axis-bounds">
+            <h2>Plotly Axis Bounds Capability</h2>
+            <p>Axis bounds define the visible minimum and maximum values of an axis (x or y). They control what portion of the data space is shown in the chart viewport.</p>
+            <p>In Plotly, axis bounds are typically set using:</p>
+            <ul>
+                <li><code>range</code> → Explicit min/max values</li>
+                <li><code>autorange</code> → Automatic calculation based on data</li>
+                <li><code>fixedrange</code> → Locks user interaction (prevents zoom/pan)</li>
+            </ul>
+
+            <h3>Setting Explicit Bounds</h3>
+            <p>You can manually define the visible window:</p>
+            <pre><code>layout = {
+  xaxis: {
+    range: [0, 100]   // show only values between 0 and 100
+  },
+  yaxis: {
+    range: [-10, 10]
+  }
+}</code></pre>
+            <p>This does <strong>NOT</strong> prevent zooming — it only defines the initial view.</p>
+
+            <h3>Preventing Zoom & Pan (Locking Bounds)</h3>
+            <p>To enforce hard bounds so users cannot change them:</p>
+            <pre><code>layout = {
+  xaxis: {
+    range: [0, 100],
+    fixedrange: true   // disables zoom & pan on this axis
+  }
+}</code></pre>
+            <p><strong>Key behavior:</strong></p>
+            <ul>
+                <li><code>fixedrange: true</code> → disables scroll zoom, drag zoom, and pan</li>
+                <li>Works per-axis (you can lock only x or only y)</li>
+            </ul>
+
+            <h3>Partial Locking (One Axis Only)</h3>
+            <p>Example: Lock X axis but allow Y zoom</p>
+            <pre><code>layout = {
+  xaxis: { range: [0, 100], fixedrange: true },
+  yaxis: { fixedrange: false }
+}</code></pre>
+            <p>Useful for time-series charts where horizontal navigation must remain fixed.</p>
+
+            <h3>Autorange vs Range</h3>
+            <h4>Autorange</h4>
+            <pre><code>xaxis: { autorange: true }</code></pre>
+            <p>Plotly calculates bounds automatically from data.</p>
+            <h4>Range Overrides Autorange</h4>
+            <p>If <code>range</code> is provided, <code>autorange</code> becomes false implicitly.</p>
+
+            <h3>Dynamic Bounds Update</h3>
+            <p>Bounds can be changed programmatically:</p>
+            <pre><code>Plotly.relayout(graphDiv, {
+  'xaxis.range': [20, 50]
+})</code></pre>
+            <p>This updates the viewport without re-rendering the entire chart.</p>
+
+            <h3>Important Notes</h3>
+            <ol>
+                <li><strong>Bounds vs Data Limits:</strong> Bounds only affect the visible window — data outside the range still exists.</li>
+                <li><strong>Interaction Modes Still Matter:</strong> Even with bounds set, users can zoom unless <code>fixedrange</code> is enabled. Drag modes like zoom, pan, or drawing tools may modify view.</li>
+                <li><strong>Shapes and Drawing:</strong> If drawing tools are enabled, users can still draw outside visible bounds, but shapes may be clipped from view.</li>
+                <li><strong>Interaction Overrides:</strong> You can disable all drag-based interactions (zoom, pan, select) using: <code>layout = { dragmode: false }</code></li>
+            </ol>
+        </section>
+
+        <hr>
+
+        <!-- AXIS LABELS -->
+        <section id="axis-labels">
+            <h2>Plotly Axis Labels Capability</h2>
+            <p>Axis labels describe what each axis represents. They help users interpret the data correctly.</p>
+            <p>In Plotly, axis labels are controlled via the axis <code>title</code> property.</p>
+
+            <h3>Setting Axis Labels</h3>
+            <pre><code>layout = {
+  xaxis: {
+    title: { text: 'Time (seconds)' }
+  },
+  yaxis: {
+    title: { text: 'Amplitude' }
+  }
+}</code></pre>
+
+            <h3>Styling Axis Labels</h3>
+            <p>You can customize font, size, and color:</p>
+            <pre><code>xaxis: {
+  title: {
+    text: 'Distance',
+    font: {
+      family: 'Arial',
+      size: 16,
+      color: '#ffffff'
+    }
+  }
+}</code></pre>
+
+            <h3>Title Position & Spacing</h3>
+            <p>Control distance from axis using <code>standoff</code> and prevent clipping with <code>automargin</code>:</p>
+            <pre><code>xaxis: {
+  title: { text: 'Distance', standoff: 20 },
+  automargin: true
+}</code></pre>
+            <ul>
+                <li><code>standoff</code> → space between axis and title</li>
+                <li><code>automargin</code> → expands margins automatically so labels fit</li>
+            </ul>
+
+            <h3>Tick Label Formatting</h3>
+            <p>Format numbers, dates, or categories:</p>
+            <pre><code>xaxis: {
+  tickformat: '.2f'   // two decimal places
+}</code></pre>
+            <p>Examples: <code>.2f</code> (fixed decimals), <code>%</code> (percentage), or Date formats for time axes.</p>
+
+            <h3>Multi-Line Labels</h3>
+            <p>Axis titles support line breaks using <code>&lt;br&gt;</code>:</p>
+            <pre><code>xaxis: {
+  title: { text: 'Revenue&lt;br&gt;(in USD)' }
+}</code></pre>
+
+            <h3>Label Positioning via Margins</h3>
+            <p>Plotly positions titles automatically, but spacing can be adjusted:</p>
+            <pre><code>layout = {
+  margin: { l: 80, r: 40, t: 40, b: 80 }
+}</code></pre>
+
+            <h3>Rotating Tick Labels</h3>
+            <p>Tick labels (numbers/categories) can be rotated for readability:</p>
+            <pre><code>xaxis: {
+  tickangle: -45
+}</code></pre>
+
+            <h3>Hiding Axis Labels</h3>
+            <ul>
+                <li><strong>Hide Title:</strong> <code>xaxis: { title: { text: '' } }</code></li>
+                <li><strong>Hide Ticks:</strong> <code>xaxis: { showticklabels: false }</code></li>
+            </ul>
+
+            <h3>Dynamic Updates</h3>
+            <pre><code>Plotly.relayout(graphDiv, {
+  'xaxis.title.text': 'Updated Label'
+})</code></pre>
+        </section>
+
+        <hr>
+
+        <!-- LEGENDS -->
+        <section id="legends">
+            <h2>Plotly Legends Capability</h2>
+            <p>A legend explains what each trace represents in the chart. It maps visual styles to data series names.</p>
+            <p>In Plotly, legends are automatically generated from trace <code>name</code> properties.</p>
+
+            <h3>Basic Legend Usage</h3>
+            <pre><code>const data = [
+  { x: [1,2,3], y: [2,4,6], type: 'scatter', name: 'Series A' },
+  { x: [1,2,3], y: [1,3,5], type: 'scatter', name: 'Series B' }
+]</code></pre>
+
+            <h3>Show or Hide Legend</h3>
+            <pre><code>layout = { showlegend: true } // or false</code></pre>
+
+            <h3>Legend Positioning</h3>
+            <p>Place legend anywhere using normalized coordinates (0 → 1):</p>
+            <pre><code>layout = {
+  legend: { x: 1, y: 1 }
+}</code></pre>
+            <ul>
+                <li><strong>Top-right:</strong> <code>{ x: 1, y: 1 }</code></li>
+                <li><strong>Bottom-right:</strong> <code>{ x: 1, y: 0 }</code></li>
+                <li><strong>Outside right:</strong> <code>{ x: 1.02, y: 1 }</code></li>
+                <li><strong>Inside Top-Left:</strong> <code>{ x: 0.1, y: 1.1 }</code> (Relative to graph area)</li>
+            </ul>
+
+            <h3>Legend Orientation</h3>
+            <pre><code>legend: { orientation: 'h' } // 'h' for horizontal row, 'v' for vertical stack</code></pre>
+
+            <h3>Styling the Legend</h3>
+            <pre><code>legend: {
+  bgcolor: '#222',
+  bordercolor: '#fff',
+  borderwidth: 1,
+  font: { family: 'Arial', size: 12, color: '#ffffff' }
+}</code></pre>
+
+            <h3>Legend Title</h3>
+            <pre><code>legend: { title: { text: 'Data Series' } }</code></pre>
+
+            <h3>Interaction Behavior</h3>
+            <ul>
+                <li><strong>Single click:</strong> toggles trace visibility</li>
+                <li><strong>Double click:</strong> isolates one trace</li>
+                <li><strong>Disable interactions:</strong> <code>legend: { itemclick: false, itemdoubleclick: false }</code></li>
+            </ul>
+
+            <h3>Grouped Legends</h3>
+            <pre><code>{ name: 'Temperature', legendgroup: 'weather' }</code></pre>
+            <p>Traces in the same group toggle together.</p>
+
+            <h3>Dynamic Updates</h3>
+            <pre><code>Plotly.relayout(graphDiv, { 'legend.orientation': 'h' })</code></pre>
+        </section>
+
+        <hr>
+
+        <!-- TRACE MODES -->
+        <section id="trace-modes">
+            <h2>Plotly Trace Modes Capability</h2>
+            <p>Trace modes determine how data points and lines are visually represented. Modes can be combined using the <code>+</code> operator.</p>
+
+            <h3>Available Modes</h3>
+            <h4>1. Markers Only</h4>
+            <p>Displays data points as individual dots.</p>
+            <pre><code>{ mode: 'markers', marker: { size: 12 } }</code></pre>
+
+            <h4>2. Lines Only</h4>
+            <p>Connects data points with straight lines (no visible markers).</p>
+            <pre><code>{ mode: 'lines' }</code></pre>
+
+            <h4>3. Lines + Markers</h4>
+            <p>Displays both connecting lines and individual data points.</p>
+            <pre><code>{ mode: 'lines+markers' }</code></pre>
+
+            <h4>4. Lines + Text</h4>
+            <p>Displays connecting lines along with text labels at each point.</p>
+            <pre><code>{
+  mode: 'lines+text',
+  text: ['Pt 1', 'Pt 2', 'Pt 3', 'Pt 4']
+}</code></pre>
+        </section>
+
+        <hr>
+
+        <!-- SHAPES -->
+        <section id="shapes">
+            <h2>Plotly Shapes and Drawing Capability</h2>
+            <p>Shapes are SVG elements (lines, rectangles, circles) that can be pre-loaded or drawn interactively.</p>
+
+            <h3>Pre-defined Shapes</h3>
+            <p>Shapes are defined in the layout's <code>shapes</code> array:</p>
+            <pre><code>layout = {
+  shapes: [
+    { type: 'line', x0: 0, y0: 8, x1: 10, y1: 8, line: { color: 'red' } },
+    { type: 'rect', x0: 2, y0: 0, x1: 4, y1: 5, fillcolor: 'green', opacity: 0.2 },
+    { type: 'circle', x0: 6, y0: 4, x1: 7, y1: 7, line: { color: 'blue' } }
+  ]
+}</code></pre>
+
+            <h3>Interactive Drawing</h3>
+            <p>Enable drawing tools via <code>dragmode</code> and the Modebar:</p>
+            <pre><code>const layout = { dragmode: 'drawline' };
+const config = {
+  modeBarButtonsToAdd: ['drawline', 'eraseshape', 'drawrect', 'drawcircle']
+};</code></pre>
+        </section>
+
+        <hr>
+
+        <!-- DYNAMIC MODIFICATION -->
+        <section id="modification">
+            <h2>Plotly Dynamic Graph Modification</h2>
+            <p>Plotly provides efficient methods to modify existing graphs without a full re-render.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Plotly.restyle</code></td>
+                            <td>Update data or trace properties</td>
+                            <td><code>Plotly.restyle(div, { 'line.color': 'red' }, [0])</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Plotly.relayout</code></td>
+                            <td>Update layout (titles, axes, legend)</td>
+                            <td><code>Plotly.relayout(div, { title: 'New Title' })</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Plotly.addTraces</code></td>
+                            <td>Append new data series</td>
+                            <td><code>Plotly.addTraces(div, { x: [1,2], y: [3,4] })</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Plotly.deleteTraces</code></td>
+                            <td>Remove traces by index</td>
+                            <td><code>Plotly.deleteTraces(div, -1)</code> (removes last)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- EVENTS -->
+        <section id="events">
+            <h2>Plotly Event Listeners</h2>
+            <p>Capture user interactions to trigger custom application logic.</p>
+
+            <h3>1. Click Events</h3>
+            <p>Triggered when a user clicks a data point.</p>
+            <pre><code>graphDiv.on('plotly_click', function(data){
+    const pt = data.points[0];
+    console.log(`Clicked x=${pt.x}, y=${pt.y}`);
+});</code></pre>
+
+            <h3>2. Hover & Unhover</h3>
+            <p>Triggered when the mouse enters or leaves a point's vicinity.</p>
+            <pre><code>graphDiv.on('plotly_hover', function(data){ /* Tooltip update */ });
+graphDiv.on('plotly_unhover', function(data){ /* Reset state */ });</code></pre>
+
+            <h3>3. Relayout (Zoom/Pan)</h3>
+            <p>Triggered whenever the layout changes, including zoom and pan operations.</p>
+            <pre><code>graphDiv.on('plotly_relayout', function(eventData){
+    if(eventData['xaxis.range[0]']) {
+        console.log('New X-Range:', eventData['xaxis.range[0]']);
+    }
+});</code></pre>
+        </section>
+
+        <hr>
+
+        <!-- MODULES -->
+        <section id="modules">
+            <h2>Plotly.js Modules Overview (JS/TS)</h2>
+            <p>Plotly provides various JS bundles to balance between feature set and bundle size.</p>
+
+            <h3>Available Bundles</h3>
+
+            <h4>1. Full Bundle</h4>
+            <ul>
+                <li><strong>Module:</strong> <code>plotly.js-dist</code></li>
+                <li><strong>Bundle Size:</strong> 3.5 to 5 MB</li>
+                <li><strong>Supported Charts:</strong> All (scatter, line, bar, pie, 3D, maps, etc.)</li>
+                <li><strong>Pros:</strong> Everything included, works out-of-the-box.</li>
+                <li><strong>Cons:</strong> Very heavy, slower initial load.</li>
+            </ul>
+
+            <h4>2. Basic Bundle</h4>
+            <ul>
+                <li><strong>Module:</strong> <code>plotly.js-basic-dist</code></li>
+                <li><strong>Bundle Size:</strong> ~600 KB</li>
+                <li><strong>Supported Charts:</strong> Scatter, line, bar, pie</li>
+                <li><strong>Pros:</strong> Lightweight, Fast initial load</li>
+                <li><strong>Cons:</strong> Missing advanced charts (3D, maps, financial)</li>
+            </ul>
+
+            <h4>3. Cartesian Bundle</h4>
+            <ul>
+                <li><strong>Module:</strong> <code>plotly.js-cartesian-dist</code></li>
+                <li><strong>Bundle Size:</strong> ~1 MB</li>
+                <li><strong>Supported Charts:</strong> 2D only (scatter, line, bar, area)</li>
+                <li><strong>Pros:</strong> Smaller than full, optimized for 2D dashboards</li>
+                <li><strong>Cons:</strong> No 3D, maps, or ternary plots</li>
+            </ul>
+
+            <h4>4. 2D WebGL Bundle</h4>
+            <ul>
+                <li><strong>Module:</strong> <code>plotly.js-gl2d-dist</code></li>
+                <li><strong>Bundle Size:</strong> &gt; 1MB</li>
+                <li><strong>Supported Charts:</strong> scattergl, heatmapgl, large 2D datasets</li>
+                <li><strong>Pros:</strong> WebGL acceleration for large datasets (>100k points)</li>
+                <li><strong>Cons:</strong> Only WebGL-supported trace types; limited annotations</li>
+            </ul>
+
+            <h4>5. 3D WebGL Bundle</h4>
+            <ul>
+                <li><strong>Module:</strong> <code>plotly.js-gl3d-dist</code></li>
+                <li><strong>Bundle Size:</strong> &gt; 1MB</li>
+                <li><strong>Supported Charts:</strong> scatter3d, surface, mesh3d</li>
+                <li><strong>Pros:</strong> Full 3D visualization, interactive rotation</li>
+                <li><strong>Cons:</strong> Slower on older devices; requires WebGL support</li>
+            </ul>
+
+            <h4>6. Geo Bundle</h4>
+            <ul>
+                <li><strong>Module:</strong> <code>plotly.js-geo-dist</code></li>
+                <li><strong>Bundle Size:</strong> ~700 KB</li>
+                <li><strong>Supported Charts:</strong> Maps, choropleths</li>
+                <li><strong>Pros:</strong> Specialized for geographic data; smaller than full</li>
+                <li><strong>Cons:</strong> No Cartesian or 3D charts; needs TopoJSON for custom maps</li>
+            </ul>
+
+            <h3>Recommendation Summary</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bundle</th>
+                            <th>Module Name</th>
+                            <th>Key Included Charts</th>
+                            <th>Missing Features</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Basic</td>
+                            <td><code>plotly.js-basic-dist</code></td>
+                            <td>Scatter, Bar, Pie</td>
+                            <td>No 3D, Maps, Finance, Heatmaps</td>
+                        </tr>
+                        <tr>
+                            <td>Cartesian</td>
+                            <td><code>plotly.js-cartesian-dist</code></td>
+                            <td>2D SVG: Bar, Box, Heatmap</td>
+                            <td>No 3D, Maps, WebGL</td>
+                        </tr>
+                        <tr>
+                            <td>GL2D</td>
+                            <td><code>plotly.js-gl2d-dist</code></td>
+                            <td>Scattergl, Splom, Parcoords</td>
+                            <td>No 3D, Maps, SVG-only 2D</td>
+                        </tr>
+                        <tr>
+                            <td>GL3D</td>
+                            <td><code>plotly.js-gl3d-dist</code></td>
+                            <td>Scatter3d, Surface, Mesh3d</td>
+                            <td>No 2D, Maps</td>
+                        </tr>
+                        <tr>
+                            <td>Geo</td>
+                            <td><code>plotly.js-geo-dist</code></td>
+                            <td>Choropleth, Scattergeo</td>
+                            <td>No 2D/3D charts</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Plotly @Types Bundle</h3>
+            <p>Main <code>plotly.js</code> package includes built-in type definitions. Dist packages often do not. Point <code>tsconfig.json</code> to main types if using partial dist bundles.</p>
+
+            <h3>Custom Bundling</h3>
+            <pre><code>import Plotly from 'plotly.js/lib/core';
+import bar from 'plotly.js/lib/bar';
+import pie from 'plotly.js/lib/pie';
+
+Plotly.register([bar, pie]);
+export default Plotly;</code></pre>
+        </section>
+
+        <hr>
+
+        <!-- INTEGRATION -->
+        <section id="integration">
+            <h2>Plotly.js Vue/Nuxt Integration (JS/TS)</h2>
+            <div class="alert alert-important">
+                <strong>Important Note:</strong> Do not put the Plotly instance in a <code>ref()</code> or <code>reactive()</code> state. Vue 3 Proxies will track every internal property, causing extreme lag or browser crashes. Use <code>shallowRef()</code>.
+            </div>
+
+            <h3>1. Your Own Wrapper (Custom Component)</h3>
+            <ul>
+                <li><strong>Pros:</strong> Full control, choose exact bundle, optimized performance, TS support.</li>
+                <li><strong>Cons:</strong> Manual setup, handle SSR/Client-only rendering manually.</li>
+                <li><strong>Use Case:</strong> Advanced dashboards, large datasets.</li>
+            </ul>
+
+            <h3>2. Vue Wrapper (vue-plotly-next)</h3>
+            <ul>
+                <li><strong>Pros:</strong> Fully declarative, supports standard events, works with Vue 2/3.</li>
+                <li><strong>Cons:</strong> Requires explicit bundle import, WebGL sizing care.</li>
+            </ul>
+
+            <h3>3. Nuxt Module (nuxt-plotly)</h3>
+            <ul>
+                <li><strong>Pros:</strong> SSR-friendly, handles dynamic imports automatically.</li>
+                <li><strong>Cons:</strong> Unofficial, limited documentation for custom events, heavy imports.</li>
+            </ul>
+
+            <h3>Decision Table</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Requirement</th>
+                            <th>Recommended Approach</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Performance (Large Data)</td>
+                            <td>Your Own Wrapper</td>
+                            <td>Avoids Vue Proxy overhead; allows shallowRef.</td>
+                        </tr>
+                        <tr>
+                            <td>Nuxt / SSR</td>
+                            <td>Your Own Wrapper</td>
+                            <td>Using &lt;ClientOnly&gt; with onMounted is most stable.</td>
+                        </tr>
+                        <tr>
+                            <td>Rapid Prototyping</td>
+                            <td>vue-plotly-next</td>
+                            <td>Quickest declarative deployment.</td>
+                        </tr>
+                        <tr>
+                            <td>Strict TypeScript</td>
+                            <td>Your Own Wrapper</td>
+                            <td>Direct access to Plotly types without wrapper interference.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer style="margin-top: 5rem; color: var(--text-muted); font-size: 0.95rem; text-align: center; padding-bottom: 4rem; border-top: 1px solid var(--border); padding-top: 2rem;">
+            Plotly Capability Explorer Hub • Professional Technical Documentation Hub
+        </footer>
+    </main>
+</body>
+</html>
